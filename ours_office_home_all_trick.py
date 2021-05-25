@@ -217,10 +217,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     # parser.add_argument("--root", default="dataset", type=str)
     # parser.add_argument("--data_dir", default="Office-Home_resnet50", type=str)
-    # parser.add_argument("--root", default="dataset", type=str)
-    # parser.add_argument("--data_dir", default="office_home_mat", type=str)
     parser.add_argument("--root", default="dataset", type=str)
-    parser.add_argument("--data_dir", default="office31_mat", type=str)
+    parser.add_argument("--data_dir", default="office_home_mat", type=str)
+    # parser.add_argument("--root", default="dataset", type=str)
+    # parser.add_argument("--data_dir", default="office31_mat", type=str)
 
     parser.add_argument("--exp_name", default="officehome", type=str)
     parser.add_argument("--src", default="D", type=str)
@@ -245,7 +245,7 @@ if __name__ == "__main__":
     parser.add_argument("--pseudo_label", default=True, type=bool)
     parser.add_argument("--decay", default=0.3, type=float)
     parser.add_argument("--semantic_loss_weight", default=1.0, type=float)
-    parser.add_argument("--num_class", default=31, type=int)
+    parser.add_argument("--num_class", default=65, type=int)
 
     args = parser.parse_args()
 
@@ -444,11 +444,12 @@ if __name__ == "__main__":
                 #     train_op = dann_train_op
                 # else:
                 #     train_op = update_decoder
-                if global_steps < 3000:
-                    # train_op = update_decoder
-                    train_op = dann_train_op
-                else:
-                    train_op = dann_train_op
+                # if global_steps < 3000:
+                #     # train_op = update_decoder
+                #     train_op = dann_train_op
+                # else:
+                #     train_op = dann_train_op
+                train_op = dann_train_op
 
                 _, batch_total_loss, batch_domain_loss, batch_label_loss, \
                 batch_src_rec_loss, batch_tgt_rec_loss, batch_rec_src_loss, \
@@ -471,8 +472,8 @@ if __name__ == "__main__":
                     break
 
                 if global_steps % 100 == 0:
-                    print(batch_src_rec_loss)
-                    print(batch_tgt_rec_loss)
+                    # print(batch_src_rec_loss)
+                    # print(batch_tgt_rec_loss)
                     target_domain_test_input = np.tile([0., 1.], [target_test_input.shape[0], 1])
 
                     feed_dict = {target_input: target_test_input,
