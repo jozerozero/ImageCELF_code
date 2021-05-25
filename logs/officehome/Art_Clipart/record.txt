@@ -1,0 +1,21 @@
+lr_0.05_momentum_0.5_seed_1_lambda_rec_0.1_lambda_mi_0.001_dropout_0.7_l2_0.0001_tw_0.01_radius_3.5_with_encode_theta_True_with_decoder_theta_True
+best_result: 0.514089
+
+lr_0.05_momentum_0.5_seed_1_lambda_rec_0.1_lambda_mi_0.001_dropout_0.8_l2_0.0001_tw_0.01_radius_3.5_with_encode_theta_True_with_decoder_theta_True
+best_result: 0.513173
+
+lr_0.05_momentum_0.5_seed_1_lambda_rec_0.1_lambda_mi_0.003_dropout_0.7_l2_0.0001_tw_0.01_radius_3.5_with_encode_theta_True_with_decoder_theta_True
+best_result: 0.519129
+
+lr_0.05_momentum_0.5_seed_1_lambda_rec_0.1_lambda_mi_0.003_dropout_0.8_l2_0.0001_tw_0.01_radius_3.5_with_encode_theta_True_with_decoder_theta_True
+best_result: 0.503322
+
+lr_0.05_momentum_0.5_seed_1_lambda_rec_0.1_lambda_mi_0.005_dropout_0.7_l2_0.0001_tw_0.01_radius_3.5_with_encode_theta_True_with_decoder_theta_True
+best_result: 0.509278
+
+lr_0.05_momentum_0.5_seed_1_lambda_rec_0.1_lambda_mi_0.005_dropout_0.8_l2_0.0001_tw_0.01_radius_3.5_with_encode_theta_True_with_decoder_theta_True
+best_result: 0.506071
+
+lr_0.05_momentum_0.5_seed_1_lambda_rec_0.3_lambda_mi_0.001_dropout_0.7_l2_0.0001_tw_0.01_radius_3.5_with_encode_theta_True_with_decoder_theta_True
+best_result: 0.509966
+
