@@ -59,7 +59,7 @@ def plot_feature_tsne(src_original_feature, tgt_origin_feature, src_rec_feature,
     return src_path, tgt_path, tran_path
 
 
-def plot_tsne(src_feature, tgt_feature, src_label, tgt_label, domain_label, epoch, src_idx, folder):
+def plot_tsne(src_feature, tgt_feature, src_label, tgt_label, domain_label, epoch, src_idx, folder, num_class=65):
 
     feature = np.concatenate([src_feature, tgt_feature], axis=0)
     label = np.concatenate([src_label, tgt_label], axis=0)
@@ -68,7 +68,7 @@ def plot_tsne(src_feature, tgt_feature, src_label, tgt_label, domain_label, epoc
 
     # plot source fig
     src_path = plot_class_level_img(feature=tsne_obj[: src_idx], label=label[: src_idx],
-                                    folder=folder, epoch=epoch, prefix="src")
+                                    folder=folder, epoch=epoch, prefix="src", num_class=num_class)
     # plt.figure(figsize=(10, 10))
     # src_df = pd.DataFrame({'X': tsne_obj[:src_idx, 0],
     #                         'Y': tsne_obj[:src_idx, 1],
@@ -84,7 +84,7 @@ def plot_tsne(src_feature, tgt_feature, src_label, tgt_label, domain_label, epoc
 
     # plot target fig
     tgt_path = plot_class_level_img(feature=tsne_obj[src_idx: ], label=label[src_idx:],
-                                    folder=folder, epoch=epoch, prefix="tgt")
+                                    folder=folder, epoch=epoch, prefix="tgt", num_class=num_class)
     # src_df = pd.DataFrame({'X': tsne_obj[src_idx:, 0],
     #                        'Y': tsne_obj[src_idx:, 1],
     #                        'digit': label[src_idx:]})
@@ -129,7 +129,7 @@ def randomcolor():
 
 
 
-def plot_class_level_img(feature, label, folder, epoch, prefix):
+def plot_class_level_img(feature, label, folder, epoch, prefix, num_class=65):
     plt.figure(figsize=(10, 10))
     src_df = pd.DataFrame({'X': feature[:, 0],
                            'Y': feature[:, 1],
@@ -139,7 +139,7 @@ def plot_class_level_img(feature, label, folder, epoch, prefix):
 
     sns.scatterplot(x="X", y="Y",
                     hue="digit",
-                    palette=[randomcolor() for _ in range(65)],
+                    palette=[randomcolor() for _ in range(num_class)],
                     legend='full',
                     data=src_df)
     save_path = os.path.join(folder, "%s_%d.png" % (prefix, epoch))
