@@ -209,11 +209,14 @@ def get_one_hot_label(y):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--root", default="/home/lizijian/workspace/additional/DA_JAE/data", type=str)
-    parser.add_argument("--data_dir", default="imageCLEF_resnet50", type=str)
+    # parser.add_argument("--root", default="/home/lizijian/workspace/additional/DA_JAE/data", type=str)
+    # parser.add_argument("--data_dir", default="imageCLEF_resnet50", type=str)
+    parser.add_argument("--root", default="dataset", type=str)
+    parser.add_argument("--data_dir", default="imagecelf_mat", type=str)
+
     parser.add_argument("--exp_name", default="imageclef", type=str)
-    parser.add_argument("--src", default="p", type=str)
-    parser.add_argument("--tgt", default="c", type=str)
+    parser.add_argument("--src", default="i", type=str)
+    parser.add_argument("--tgt", default="p", type=str)
     parser.add_argument("--domain_num", default=2, type=int)
     parser.add_argument("--d_hidden_size", default=1, type=int)    # fixed
     parser.add_argument("--z_hidden_state", default=2048, type=int)    # fixed
@@ -227,8 +230,9 @@ if __name__ == "__main__":
     parser.add_argument("--tw", default=1.0, type=float)
     parser.add_argument("--momentum", default=0.75, type=float)
     parser.add_argument("--radius", default=6.5, type=float)
-    parser.add_argument("--is_use_theta_in_encoder", default=False, type=bool)
-    parser.add_argument("--is_use_theta_in_decoder", default=False, type=bool)
+    parser.add_argument("--is_use_theta_in_encoder", default=True, type=bool)
+    parser.add_argument("--is_use_theta_in_decoder", default=True, type=bool)
+    parser.add_argument("--stopping_step", default=8000, type=int)
 
     args = parser.parse_args()
     os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
@@ -425,7 +429,7 @@ if __name__ == "__main__":
                 writer.add_scalar("loss_total", batch_total_loss, global_steps)
                 writer.add_scalar("train_domain_acc", batch_domain_acc, global_steps)
 
-                if global_steps > 5000:
+                if global_steps > args.stopping_step:
                     print("best_result: ", best_result)
                     break
 

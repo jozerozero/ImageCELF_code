@@ -59,11 +59,11 @@ def load_resnet_office(root, source_name, target_name, data_folder):
         target_data = pd.read_csv(target_path, header=None).values
         target_feature = target_data[:, :-1]
         target_label = np.array(target_data[:, -1], dtype=np.int32)
-    elif data_folder == "office_home_mat":
+    elif data_folder == "imagecelf_mat":
         data_folder = os.path.join(root, data_folder)
-        source_path = os.path.join(data_folder, "OfficeHome-%s-resnet50-noft.mat" % source_name)
-        target_path = os.path.join(data_folder, "OfficeHome-%s-resnet50-noft.mat" % target_name)
-
+        # imageclef-b-resnet50-noft.mat
+        source_path = os.path.join(data_folder, "imageclef-%s-resnet50-noft.mat" % source_name)
+        target_path = os.path.join(data_folder, "imageclef-%s-resnet50-noft.mat" % target_name)
         source_data = io.loadmat(source_path)
         source_feature = np.squeeze(source_data["resnet50_features"])
         source_label = np.squeeze(source_data["labels"])

@@ -25,8 +25,8 @@ radius_list = [6.5]
 parser = argparse.ArgumentParser()
 parser.add_argument("--src", default="c", type=str)
 parser.add_argument("--tgt", default="i", type=str)
-parser.add_argument("--is_use_theta_in_encoder", default=False, type=bool)
-parser.add_argument("--is_use_theta_in_decoder", default=False, type=bool)
+parser.add_argument("--is_use_theta_in_encoder", default=True, type=bool)
+parser.add_argument("--is_use_theta_in_decoder", default=True, type=bool)
 args = parser.parse_args()
 
 command_list = []

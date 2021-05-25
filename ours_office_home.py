@@ -231,6 +231,7 @@ if __name__ == "__main__":
     parser.add_argument("--radius", default=3.5, type=float)
     parser.add_argument("--is_use_theta_in_encoder", default=True, type=bool)
     parser.add_argument("--is_use_theta_in_decoder", default=True, type=bool)
+    parser.add_argument("--stopping_step", default=8000, type=int)
 
     args = parser.parse_args()
     os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
@@ -419,6 +420,10 @@ if __name__ == "__main__":
                 writer.add_scalar("loss_trans_src_class", batch_trans_src_loss, global_steps)
                 writer.add_scalar("loss_total", batch_total_loss, global_steps)
                 writer.add_scalar("train_domain_acc", batch_domain_acc, global_steps)
+
+                if global_steps > args.stopping_step:
+                    print("best_result: ", best_result)
+                    break
 
                 if global_steps % 100 == 0:
                     target_domain_test_input = np.tile([0., 1.], [target_test_input.shape[0], 1])
