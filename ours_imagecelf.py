@@ -232,7 +232,7 @@ if __name__ == "__main__":
     parser.add_argument("--radius", default=6.5, type=float)
     parser.add_argument("--is_use_theta_in_encoder", default=True, type=bool)
     parser.add_argument("--is_use_theta_in_decoder", default=True, type=bool)
-    parser.add_argument("--stopping_step", default=8000, type=int)
+    parser.add_argument("--stopping_step", default=18000, type=int)
 
     args = parser.parse_args()
     os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
