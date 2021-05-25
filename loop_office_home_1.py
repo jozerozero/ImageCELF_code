@@ -28,17 +28,19 @@ parser.add_argument("--src", default="Product", type=str)
 parser.add_argument("--tgt", default="Art", type=str)
 parser.add_argument("--is_use_theta_in_encoder", default=True, type=bool)
 parser.add_argument("--is_use_theta_in_decoder", default=True, type=bool)
+parser.add_argument("--dirtt", default=True, type=bool)
+parser.add_argument("--pseudo_label", default=True, type=bool)
 args = parser.parse_args()
 
 command_list = []
 command_format = "python ours_office_home.py --src SOURCE --tgt TARGET " \
                  "--learning_rate %g --momentum %g --lambda_rec %g --lambda_mi %g --dropout_rate %g --l2_weight %g " \
-                 "--tw %g --radius %g --is_use_theta_in_encoder USE_IN_ENCODER --is_use_theta_in_decoder USE_IN_DECODER"
+                 "--tw %g --radius %g --is_use_theta_in_encoder USE_IN_ENCODER --is_use_theta_in_decoder USE_IN_DECODER " \
+                 "--dirtt DIRTT --pseudo_label PSUEDO_LABEL"
 
 command_format = command_format.replace("SOURCE", args.src).replace("TARGET", args.tgt)
 command_format = command_format.replace("USE_IN_ENCODER", str(args.is_use_theta_in_encoder)).replace("USE_IN_DECODER", str(args.is_use_theta_in_decoder))
-# print(command_format)
-# exit()
+command_format = command_format.replace("DIRTT", str(args.dirtt)).replace("PSUEDO_LABEL", str(args.pseudo_label))
 
 for radius in radius_list:
     for tw in tw_list:

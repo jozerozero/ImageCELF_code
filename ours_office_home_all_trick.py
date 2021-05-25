@@ -105,9 +105,10 @@ class OfficeModel:
 
             decoder_b0 = bias_variable(shape=[self.input_shape], name="decoder_biases_0")
             decoder_h0 = tf.matmul(feature, decoder_w0) + decoder_b0
-            decoder_h0 = tf.nn.relu(decoder_h0)
-            decoder_h0 = tf.layers.dropout(decoder_h0, training=is_training, rate=dropout_rate)
-            decoder_h0 = tf.contrib.layers.layer_norm(decoder_h0, scale=True)
+            decoder_h0 = tf.sigmoid(decoder_h0)
+            # decoder_h0 = tf.layers.dropout(decoder_h0, training=is_training, rate=dropout_rate)
+            # decoder_h0 = tf.contrib.layers.layer_norm(decoder_h0, scale=True)
+            # decoder_h0 = tf.sigmoid(tf.layers.dropout(decoder_h0, training=is_training, rate=dropout_rate))
 
         return decoder_h0
 
@@ -219,11 +220,11 @@ if __name__ == "__main__":
     # parser.add_argument("--root", default="dataset", type=str)
     # parser.add_argument("--data_dir", default="office_home_mat", type=str)
     parser.add_argument("--root", default="dataset", type=str)
-    parser.add_argument("--data_dir", default="imagecelf_mat", type=str)
+    parser.add_argument("--data_dir", default="office31_mat", type=str)
 
     parser.add_argument("--exp_name", default="officehome", type=str)
-    parser.add_argument("--src", default="i", type=str)
-    parser.add_argument("--tgt", default="p", type=str)
+    parser.add_argument("--src", default="D", type=str)
+    parser.add_argument("--tgt", default="A", type=str)
     parser.add_argument("--domain_num", default=2, type=int)
     parser.add_argument("--d_hidden_size", default=1, type=int)    # fixed
     parser.add_argument("--z_hidden_state", default=256, type=int)    # fixed
@@ -239,13 +240,12 @@ if __name__ == "__main__":
     parser.add_argument("--radius", default=3.5, type=float)
     parser.add_argument("--is_use_theta_in_encoder", default=True, type=bool)
     parser.add_argument("--is_use_theta_in_decoder", default=True, type=bool)
-    parser.add_argument("--stopping_step", default=8000, type=int)
+    parser.add_argument("--stopping_step", default=50000, type=int)
     parser.add_argument("--dirtt", default=True, type=bool)
     parser.add_argument("--pseudo_label", default=True, type=bool)
-    parser.add_argument("--conditional_entropy", default=False, type=bool)
     parser.add_argument("--decay", default=0.3, type=float)
     parser.add_argument("--semantic_loss_weight", default=1.0, type=float)
-    parser.add_argument("--num_class", default=12, type=int)
+    parser.add_argument("--num_class", default=31, type=int)
 
     args = parser.parse_args()
 
@@ -277,10 +277,12 @@ if __name__ == "__main__":
     # num_steps = 60000
 
     exp_folder = os.path.join(args.exp_name, "%s_%s" % (args.src, args.tgt))
-    exp_name = "lr_%g_momentum_%g_seed_%d_lambda_rec_%g_lambda_mi_%g_dropout_%g_l2_%g_tw_%g_radius_%g_with_encode_theta_%s_with_decoder_theta_%s" % \
+    exp_name = "lr_%g_momentum_%g_seed_%d_lambda_rec_%g_lambda_mi_%g_dropout_%g_l2_%g_tw_%g" \
+               "_radius_%g_with_encode_theta_%s_with_decoder_theta_%s_dirtt_%s_pseudo_%s" % \
                (args.learning_rate, args.momentum, args.seed, args.lambda_rec,
                 args.lambda_mi, args.dropout_rate, args.l2_weight, args.tw, args.radius,
-                str(args.is_use_theta_in_encoder), str(args.is_use_theta_in_decoder))
+                str(args.is_use_theta_in_encoder), str(args.is_use_theta_in_decoder),
+                str(args.dirtt), str(args.pseudo_label))
     exp_path = os.path.join("logs", exp_folder, exp_name)
     os.makedirs(exp_path, exist_ok=True)
 
@@ -390,11 +392,8 @@ if __name__ == "__main__":
         total_loss = label_loss + domain_loss + greg_loss + args.lambda_rec * rec_loss + \
                          args.lambda_mi * label_loss_2
 
-        if args.conditional_entropy:
-            total_loss += args.tw * loss_trg_cent
-
         if args.dirtt:
-            total_loss += vat_loss
+            total_loss = total_loss + vat_loss + args.tw * loss_trg_cent
 
         if args.pseudo_label:
             total_loss += args.semantic_loss_weight * semantic_loss
@@ -405,6 +404,7 @@ if __name__ == "__main__":
         update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
         with tf.control_dependencies(update_ops):
             dann_train_op = tf.train.MomentumOptimizer(learning_rate, args.momentum).minimize(total_loss)
+            update_decoder = tf.train.MomentumOptimizer(10 * learning_rate, args.momentum).minimize(rec_loss)
             if args.pseudo_label:
                 dann_train_op = tf.group(dann_train_op, update_sc, update_sc)
 
@@ -440,7 +440,12 @@ if __name__ == "__main__":
                 X0, y0 = next(gen_source_batch)
                 X1, y1 = next(gen_target_batch)
 
-                if global_steps < num_steps - 50000:
+                # if global_steps < num_steps - 50000:
+                #     train_op = dann_train_op
+                # else:
+                #     train_op = update_decoder
+                if global_steps < 3000:
+                    # train_op = update_decoder
                     train_op = dann_train_op
                 else:
                     train_op = dann_train_op
@@ -466,6 +471,8 @@ if __name__ == "__main__":
                     break
 
                 if global_steps % 100 == 0:
+                    print(batch_src_rec_loss)
+                    print(batch_tgt_rec_loss)
                     target_domain_test_input = np.tile([0., 1.], [target_test_input.shape[0], 1])
 
                     feed_dict = {target_input: target_test_input,

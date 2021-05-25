@@ -83,6 +83,17 @@ def load_resnet_office(root, source_name, target_name, data_folder):
         target_data = io.loadmat(target_path)
         target_feature = np.squeeze(target_data["resnet50_features"])
         target_label = np.squeeze(target_data["labels"])
+    elif data_folder == "office31_mat":
+        data_folder = os.path.join(root, data_folder)
+        source_path = os.path.join(data_folder, "office-%s-resnet50-noft.mat" % source_name)
+        target_path = os.path.join(data_folder, "office-%s-resnet50-noft.mat" % target_name)
+        source_data = io.loadmat(source_path)
+        source_feature = np.squeeze(source_data["resnet50_features"])
+        source_label = np.squeeze(source_data["labels"])
+
+        target_data = io.loadmat(target_path)
+        target_feature = np.squeeze(target_data["resnet50_features"])
+        target_label = np.squeeze(target_data["labels"])
     else:
         source_path = os.path.join(data_folder, source_name + "_" + source_name + ".npy")
         target_path = os.path.join(data_folder, source_name + "_" + target_name + ".npy")
