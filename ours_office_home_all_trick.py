@@ -240,7 +240,7 @@ if __name__ == "__main__":
     parser.add_argument("--radius", default=3.5, type=float)
     parser.add_argument("--is_use_theta_in_encoder", default=True, type=bool)
     parser.add_argument("--is_use_theta_in_decoder", default=True, type=bool)
-    parser.add_argument("--stopping_step", default=50000, type=int)
+    parser.add_argument("--stopping_step", default=80000, type=int)
     parser.add_argument("--dirtt", default=True, type=bool)
     parser.add_argument("--pseudo_label", default=True, type=bool)
     parser.add_argument("--decay", default=0.3, type=float)

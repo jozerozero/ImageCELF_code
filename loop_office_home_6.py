@@ -31,7 +31,7 @@ parser.add_argument("--is_use_theta_in_decoder", default=True, type=bool)
 args = parser.parse_args()
 
 command_list = []
-command_format = "python ours_office_home.py --src SOURCE --tgt TARGET " \
+command_format = "python ours_office_home_all_trick.py --src SOURCE --tgt TARGET " \
                  "--learning_rate %g --momentum %g --lambda_rec %g --lambda_mi %g --dropout_rate %g --l2_weight %g " \
                  "--tw %g --radius %g --is_use_theta_in_encoder USE_IN_ENCODER --is_use_theta_in_decoder USE_IN_DECODER"
 

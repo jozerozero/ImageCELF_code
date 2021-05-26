@@ -18,14 +18,14 @@ dropout_list = [0.7, 0.8]  # 0.8
 # l2_list = [5e-4, 1e-4]
 l2_list = [1e-4]  # 5e-5
 tw_list = [1e-2, 5e-2]  # 5e-2
-radius_list = [3.5, 5]  # 5, 3.5
+radius_list = [1.5, 3.5, 5]    # 5, 3.5
 
 # best result
 # lr_0.05_momentum_0.8_seed_1_lambda_rec_0.1w_lambda_mi_0.001_dropout_0.7_l2_0.0005
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--src", default="Product", type=str)
-parser.add_argument("--tgt", default="Art", type=str)
+parser.add_argument("--src", default="RealWorld", type=str)
+parser.add_argument("--tgt", default="Clipart", type=str)
 parser.add_argument("--is_use_theta_in_encoder", default=True, type=bool)
 parser.add_argument("--is_use_theta_in_decoder", default=True, type=bool)
 parser.add_argument("--dirtt", default=True, type=bool)
@@ -33,7 +33,7 @@ parser.add_argument("--pseudo_label", default=True, type=bool)
 args = parser.parse_args()
 
 command_list = []
-command_format = "python ours_office_home.py --src SOURCE --tgt TARGET " \
+command_format = "python ours_office_home_all_trick.py --src SOURCE --tgt TARGET " \
                  "--learning_rate %g --momentum %g --lambda_rec %g --lambda_mi %g --dropout_rate %g --l2_weight %g " \
                  "--tw %g --radius %g --is_use_theta_in_encoder USE_IN_ENCODER --is_use_theta_in_decoder USE_IN_DECODER " \
                  "--dirtt DIRTT --pseudo_label PSUEDO_LABEL"
