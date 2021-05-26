@@ -18,14 +18,14 @@ dropout_list = [0.7, 0.8]  # 0.8
 # l2_list = [5e-4, 1e-4]
 l2_list = [1e-4]  # 5e-5
 tw_list = [1e-2, 5e-2]  # 5e-2
-radius_list = [1.5, 3.5, 5]    # 5, 3.5
+radius_list = [1.5, 3.5, 5]   # 5, 3.5
 
 # best result
 # lr_0.05_momentum_0.8_seed_1_lambda_rec_0.1w_lambda_mi_0.001_dropout_0.7_l2_0.0005
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--src", default="Product", type=str)
-parser.add_argument("--tgt", default="RealWorld", type=str)
+parser.add_argument("--tgt", default="Art", type=str)
 parser.add_argument("--is_use_theta_in_encoder", default=True, type=bool)
 parser.add_argument("--is_use_theta_in_decoder", default=True, type=bool)
 parser.add_argument("--dirtt", default=True, type=bool)
