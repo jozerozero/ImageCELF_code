@@ -10,7 +10,7 @@ import argparse
 # l2_list = [1e-4]
 # tw_list = [1e-2, 5e-2]
 
-lr_list = [0.05, 0.025]
+lr_list = [0.05, 0.1]
 momentum_list = [0.7, 0.8, 0.75]
 lambda_rec_list = [0.1]
 lambda_mi_list = [0.001]
